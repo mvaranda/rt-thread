@@ -1,0 +1,41 @@
+
+
+sudo port install qemu
+sudo port install scons
+sudo port install ncurses
+sudo port install arm-none-eabi-gcc
+
+export PATH=$PATH:/opt/local/bin
+
+git clone https://github.com/mvaranda/rt-thread
+
+edit file rt-thread/bsp/qemu-vexpress-a9/rtconfig.py
+Change line:
+  from:
+    EXEC_PATH   = r'/usr/bin'
+  to:
+    EXEC_PATH   = r'/opt/local/bin'
+
+cd bsp/qemu-vexpress-a9
+
+scons --menuconfig
+
+source ~/.env/env.sh
+
+too compile:
+scons
+
+
+to use packages, need python requests package:
+
+if no pip:
+
+  curl -O https://bootstrap.pypa.io/pip/2.7/get-pip.py
+  python get-pip.py
+  python -m pip install --upgrade "pip < 21.0"
+
+python -m pip install requests
+
+
+
+

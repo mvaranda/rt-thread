@@ -140,6 +140,10 @@
 #define RT_SFUD_USING_FLASH_INFO_TABLE
 #define RT_SFUD_SPI_MAX_HZ 50000000
 #define RT_USING_WDT
+#define RT_USING_AUDIO
+#define RT_AUDIO_REPLAY_MP_BLOCK_SIZE 4096
+#define RT_AUDIO_REPLAY_MP_BLOCK_COUNT 2
+#define RT_AUDIO_RECORD_PIPE_SIZE 2048
 
 /* Using USB */
 
@@ -268,6 +272,11 @@
 
 /* LVGL: powerful and easy-to-use embedded GUI library */
 
+#define PKG_USING_LVGL
+#define PKG_USING_LVGL_DEMOS
+#define PKG_USING_LVGL_V820
+#define PKG_LVGL_VER_NUM 0x08020
+#define PKG_USING_LV_MUSIC_DEMO
 
 /* u8g2: a monochrome graphic library */
 
@@ -319,6 +328,12 @@
 
 #define RT_USING_UART0
 #define RT_USING_UART1
+#define BSP_USING_LVGL
+#define BSP_DRV_CLCD
+#define BSP_DRV_MOUSE
+#define BSP_LCD_WIDTH 640
+#define BSP_LCD_HEIGHT 480
 #define BSP_DRV_EMAC
+#define BSP_DRV_AUDIO
 
 #endif
