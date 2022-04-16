@@ -1,6 +1,6 @@
 echo "********************************************"
 echo "*                                          *"
-echo "* running bsp/bsp/qemu-vexpress-a9/qemu.sh *"
+echo "* running ./bsp/qemu-vexpress-a9/qemu.sh   *"
 echo "*                                          *"
 echo "********************************************"
 pushd bsp/qemu-vexpress-a9
