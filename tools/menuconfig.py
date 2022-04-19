@@ -32,7 +32,7 @@ import operator
 
 DEFAULT_RTT_PACKAGE_URL = 'https://github.com/RT-Thread/packages.git'
 # you can change the package url by defining RTT_PACKAGE_URL, ex:
-#    export RTT_PACKAGE_URL=https://github.com/myrepo.git
+#    export RTT_PACKAGE_URL=https://github.com/Varanda-Labs/packages.git
 
 # make rtconfig.h from .config
 
