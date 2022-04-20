@@ -62,6 +62,8 @@ struct finsh_syscall *finsh_syscall_next(struct finsh_syscall *call)
 
 #endif /* defined(_MSC_VER) || (defined(__GNUC__) && defined(__x86_64__)) */
 
+static cb_external_shell_ptr cb_external_shell;
+
 #ifdef RT_USING_HEAP
 int finsh_set_prompt(const char *prompt)
 {
@@ -637,7 +639,17 @@ void finsh_thread_entry(void *parameter)
 #endif
             if (shell->echo_mode)
                 rt_kprintf("\n");
-            msh_exec(shell->line, shell->line_position);
+
+            /* if there is an external shell call it */
+            if (cb_external_shell)
+            {
+                continue;
+                typedef int (*cb_external_shell_ptr)(char *cmd, rt_size_t length);
+            }
+            else
+            {
+                msh_exec(shell->line, shell->line_position);
+            }
 
             rt_kprintf(FINSH_PROMPT);
             rt_memset(shell->line, 0, sizeof(shell->line));
@@ -795,6 +807,12 @@ int finsh_system_init(void)
         rt_thread_startup(tid);
     return 0;
 }
+
+void finsh_set_external_shell(cb_external_shell_ptr func)
+{
+    cb_external_shell = func; 
+}
+
 INIT_APP_EXPORT(finsh_system_init);
 
 #endif /* RT_USING_FINSH */

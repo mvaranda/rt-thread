@@ -263,6 +263,8 @@
 
 /* XML: Extensible Markup Language */
 
+#define PKG_USING_LUA_EOS
+#define PKG_USING_LUA_EOS_LATEST_VERSION
 
 /* multimedia packages */
 

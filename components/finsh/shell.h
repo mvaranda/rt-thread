@@ -52,6 +52,8 @@ int finsh_set_prompt(const char *prompt);
     #define FINSH_THREAD_NAME   "tshell"
 #endif
 
+typedef int (*cb_external_shell_ptr)(char *cmd, rt_size_t length);
+
 enum input_stat
 {
     WAIT_NORMAL,
@@ -101,5 +103,7 @@ void finsh_set_prompt_mode(rt_uint32_t prompt_mode);
     rt_err_t finsh_set_password(const char *password);
     const char *finsh_get_password(void);
 #endif
+
+void finsh_set_external_shell(cb_external_shell_ptr func);
 
 #endif
