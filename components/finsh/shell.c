@@ -643,8 +643,8 @@ void finsh_thread_entry(void *parameter)
             /* if there is an external shell call it */
             if (cb_external_shell)
             {
+                cb_external_shell(shell->line, shell->line_position);
                 continue;
-                typedef int (*cb_external_shell_ptr)(char *cmd, rt_size_t length);
             }
             else
             {
