@@ -16,6 +16,7 @@
  *                             initialization when use GNU GCC compiler.
  * 2016-11-26     armink       add password authentication
  * 2018-07-02     aozima       add custom prompt support.
+ * 2022-04-20     mvaranda     add support for external shell.
  */
 
 #include <rthw.h>
