@@ -42,3 +42,7 @@ tags
 .history
 CMakeLists.txt
 cmake-build-debug
+
+#MacOS
+.DS_Store**
+
