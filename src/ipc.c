@@ -42,6 +42,10 @@
  * 2022-01-07     Gabriel      Moving __on_rt_xxxxx_hook to ipc.c
  * 2022-01-24     THEWON       let rt_mutex_take return thread->error when using signal
  * 2022-04-08     Stanley      Correct descriptions
+ * 2022-04-23     Varanda      size = 0 for mq send/recv uses size provided during creation/init.
+ *                             motivation: to allow code ported from FreeRTOS that uses xQueueSend and
+ *                             xQueueReceive where size does not need to be provided. 
+ *                             Also added rt_mq_num_msgs (compatible with FreeRTOS uxQueueMessagesWaiting)
  */
 
 #include <rtthread.h>
@@ -2728,7 +2732,8 @@ RTM_EXPORT(rt_mq_delete);
  *
  * @param    buffer is the content of the message.
  *
- * @param    size is the length of the message(Unit: Byte).
+ * @param    size is the length of the message(Unit: Byte). If size = 0 the full message size
+ *           provided during queue creation or initialization will be sent.
  *
  * @param    timeout is a timeout period (unit: an OS tick).
  *
@@ -2753,7 +2758,11 @@ rt_err_t rt_mq_send_wait(rt_mq_t     mq,
     RT_ASSERT(mq != RT_NULL);
     RT_ASSERT(rt_object_get_type(&mq->parent.parent) == RT_Object_Class_MessageQueue);
     RT_ASSERT(buffer != RT_NULL);
-    RT_ASSERT(size != 0);
+
+    if (size == 0) /* caller wants to transfer max size */ 
+    {
+        size = mq->msg_size;
+    }
 
     /* current context checking */
     RT_DEBUG_SCHEDULER_AVAILABLE(timeout != 0);
@@ -2918,7 +2927,8 @@ RTM_EXPORT(rt_mq_send_wait)
  *
  * @param    buffer is the content of the message.
  *
- * @param    size is the length of the message(Unit: Byte).
+ * @param    size is the length of the message(Unit: Byte). If size = 0 the full message size
+ *           provided during queue creation or initialization will be sent.
  *
  * @return   Return the operation status. When the return value is RT_EOK, the operation is successful.
  *           If the return value is any other values, it means that the messagequeue detach failed.
@@ -2945,7 +2955,8 @@ RTM_EXPORT(rt_mq_send);
  *
  * @param    buffer is the content of the message.
  *
- * @param    size is the length of the message(Unit: Byte).
+ * @param    size is the length of the message(Unit: Byte). If size = 0 the full message size
+ *           provided during queue creation or initialization will be sent.
  *
  * @return   Return the operation status. When the return value is RT_EOK, the operation is successful.
  *           If the return value is any other values, it means that the mailbox detach failed.
@@ -2959,7 +2970,11 @@ rt_err_t rt_mq_urgent(rt_mq_t mq, const void *buffer, rt_size_t size)
     RT_ASSERT(mq != RT_NULL);
     RT_ASSERT(rt_object_get_type(&mq->parent.parent) == RT_Object_Class_MessageQueue);
     RT_ASSERT(buffer != RT_NULL);
-    RT_ASSERT(size != 0);
+
+    if (size == 0) /* caller wants to transfer max message size */ 
+    {
+        size = mq->msg_size;
+    }
 
     /* greater than one message size */
     if (size > mq->msg_size)
@@ -3044,7 +3059,8 @@ RTM_EXPORT(rt_mq_urgent);
  *
  * @param    buffer is the content of the message.
  *
- * @param    size is the length of the message(Unit: Byte).
+ * @param    size is the length of the message(Unit: Byte). If size = 0 the full message size
+ *           provided during queue creation or initialization will be received.
  *
  * @param    timeout is a timeout period (unit: an OS tick). If the message is unavailable, the thread will wait for
  *           the message in the queue up to the amount of time specified by this parameter.
@@ -3072,7 +3088,11 @@ rt_err_t rt_mq_recv(rt_mq_t    mq,
     RT_ASSERT(mq != RT_NULL);
     RT_ASSERT(rt_object_get_type(&mq->parent.parent) == RT_Object_Class_MessageQueue);
     RT_ASSERT(buffer != RT_NULL);
-    RT_ASSERT(size != 0);
+
+    if (size == 0) /* caller wants to transfer max message size */ 
+    {
+        size = mq->msg_size;
+    }
 
     /* current context checking */
     RT_DEBUG_SCHEDULER_AVAILABLE(timeout != 0);
@@ -3274,6 +3294,22 @@ rt_err_t rt_mq_control(rt_mq_t mq, int cmd, void *arg)
     return -RT_ERROR;
 }
 RTM_EXPORT(rt_mq_control);
+
+
+/**
+ * @brief    This function returns the number of messages in the queue.
+ *
+ * @param    mq is a pointer to a messagequeue object.
+ *
+ * @return   Return the current number of messages in the queue.
+ */
+rt_err_t rt_mq_num_msgs(rt_mq_t mq)
+{
+    /* parameter check */
+    RT_ASSERT(mq != RT_NULL);
+    return mq->entry;
+}
+RTM_EXPORT(rt_mq_num_msgs);
 
 /**@}*/
 #endif /* RT_USING_MESSAGEQUEUE */

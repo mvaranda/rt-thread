@@ -448,6 +448,7 @@ rt_err_t rt_mq_recv(rt_mq_t    mq,
                     rt_size_t  size,
                     rt_int32_t timeout);
 rt_err_t rt_mq_control(rt_mq_t mq, int cmd, void *arg);
+rt_err_t rt_mq_num_msgs(rt_mq_t mq);
 #endif
 
 /* defunct */
