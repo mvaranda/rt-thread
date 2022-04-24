@@ -63,7 +63,7 @@ struct finsh_syscall *finsh_syscall_next(struct finsh_syscall *call)
 
 #endif /* defined(_MSC_VER) || (defined(__GNUC__) && defined(__x86_64__)) */
 
-static cb_external_shell_ptr cb_external_shell;
+static cb_external_shell_ptr cb_external_shell = NULL;;
 
 #ifdef RT_USING_HEAP
 int finsh_set_prompt(const char *prompt)
@@ -645,7 +645,6 @@ void finsh_thread_entry(void *parameter)
             if (cb_external_shell)
             {
                 cb_external_shell(shell->line, shell->line_position);
-                continue;
             }
             else
             {
