@@ -38,6 +38,10 @@ if RT_USING_MSH
         bool "Using symbol table for commands"
         default y
 
+    config FINSH_DO_NOT_AUTOSTART
+        bool "Do not auto-start shell (other code will start it)"
+        default n
+
     config FINSH_CMD_SIZE
         int "The command line size for shell"
         default 80
