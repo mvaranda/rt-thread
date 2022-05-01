@@ -14,7 +14,7 @@
 
 int main(void)
 {
-    printf("Hello RT-Thread!\n");
+    printf("RT-Thread running Lua-EOS\n");
 
     return 0;
 }
